@@ -8,6 +8,7 @@ import AnalyzePage   from './pages/AnalyzePage';
 import ComparePage   from './pages/ComparePage';
 import ReportsPage   from './pages/ReportsPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import NotFoundPage  from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -38,7 +39,8 @@ function App() {
 
           {/* Default redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          {/* <Route path="*" element={<Navigate to="/dashboard" replace />} /> */}
+          <Route path="*" element={<NotFoundPage />} />
 
         </Routes>
       </BrowserRouter>
