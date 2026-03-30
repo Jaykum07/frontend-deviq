@@ -37,10 +37,14 @@ function App() {
             <ProtectedRoute><ReportsPage /></ProtectedRoute>
           } />
 
+          <Route path='/not-found' element={
+            <ProtectedRoute><NotFoundPage/></ProtectedRoute>
+          } />
+
           {/* Default redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          {/* <Route path="*" element={<Navigate to="/dashboard" replace />} /> */}
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
+          
 
         </Routes>
       </BrowserRouter>

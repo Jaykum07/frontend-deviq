@@ -11,6 +11,8 @@ const axiosInstance = axios.create({
   // reads VITE_API_URL from your .env file
 });
 
+console.log('API Base URL:', import.meta.env.VITE_API_URL);
+
 // ── REQUEST INTERCEPTOR ───────────────────────────────────────────────────────
 // Runs BEFORE every request is sent
 // Automatically attaches token from localStorage to every request header

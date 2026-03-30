@@ -137,6 +137,7 @@ const LoginPage = () => {
     }
     setLoading(true);
     try {
+      console.log('Submitting Login Form with:', formData);
       const res = await loginApi(formData.email, formData.password);
       login(res.data.user, res.data.accessToken);
       navigate('/dashboard');
