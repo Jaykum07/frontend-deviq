@@ -45,25 +45,27 @@ const AnalyzePage = () => {
   const [savedMsg,   setSavedMsg]   = useState('');
 
   useEffect(() => {
+    const fetchAnalysis = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const res = await analyzeUserApi(username);
+        setAnalysis(res.data.analysis);
+      } catch (err) {
+        setError(
+          err.response?.data?.message ||
+          `Could not find GitHub user "${username}"`
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    
     if (username) fetchAnalysis();
-  });
+  }, [username]);
 
-  const fetchAnalysis = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await analyzeUserApi(username);
-      setAnalysis(res.data.analysis);
-    } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        `Could not find GitHub user "${username}"`
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
+  
   const handleSaved = () => {
     setShowSave(false);
     setSavedMsg('Report saved successfully!');
@@ -109,6 +111,7 @@ const AnalyzePage = () => {
         <Navbar />
 
         {/* Loading */}
+        
         {loading && <LoadingSkeleton />}
 
         {/* Error */}
