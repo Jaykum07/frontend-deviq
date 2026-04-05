@@ -45,14 +45,26 @@ const ComparePage = () => {
 
   // ── Save comparison report ───────────────────────────────────────────────────
   const handleSaveReport = async () => {
-    if (!reportTitle.trim()) return;
+    if (!reportTitle.trim()){
+      setError('Please enter a title for the report');
+      return;
+    } 
     setSaving(true);
-
+    setError('');
     try {
       // Get analysis IDs from results
       // We need to fetch them from the compare results
       // Results have githubUsername — we match to get analysisIds
       const analysisIds = results.results.map((r) => r.analysisId).filter(Boolean);
+
+      console.log('Results:', results.results);
+      console.log('Analysis Ids:', analysisIds);
+
+      if(analysisIds.length < 2){
+        setError('Cannot save - please compare again after backend restart');
+        setSaving(false);
+        return;
+      }
 
       await createReportApi({
         title:       reportTitle.trim(),
@@ -61,11 +73,10 @@ const ComparePage = () => {
         notes:       `Compared: ${usernames.join(', ')}. Winner: ${results.winner}`,
       });
 
-      navigate('/reports');
-
       setSavedMsg('Comparison report saved!');
       setShowSaveForm(false);
       setTimeout(() => setSavedMsg(''), 3000);
+      navigate('/reports');
     } catch (err) {
       setError(`Failed to save report: ${err.response?.data?.message || 'Try again.'}`);
     } finally {
