@@ -43,6 +43,7 @@ const AnalyzePage = () => {
   const [activeRepo, setActiveRepo] = useState(null);
   const [showSave,   setShowSave]   = useState(false);
   const [savedMsg,   setSavedMsg]   = useState('');
+  const [reportSaved, setReportSaved] = useState(false);
 
   useEffect(() => {
     const fetchAnalysis = async () => {
@@ -68,6 +69,7 @@ const AnalyzePage = () => {
   
   const handleSaved = () => {
     setShowSave(false);
+    setReportSaved(true);
     setSavedMsg('Report saved successfully!');
     setTimeout(() => setSavedMsg(''), 3000);
   };
@@ -174,6 +176,7 @@ const AnalyzePage = () => {
               username={username}
               metrics={metrics}
               onSave={() => setShowSave(true)}
+              reportSaved={reportSaved}
             />
 
             {/* Tab navigation */}
