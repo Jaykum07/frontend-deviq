@@ -9,6 +9,8 @@ import ComparePage   from './pages/ComparePage';
 import ReportsPage   from './pages/ReportsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage  from './pages/NotFoundPage';
+import GuidePage from './pages/GuidePage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -36,6 +38,12 @@ function App() {
           <Route path="/reports" element={
             <ProtectedRoute><ReportsPage /></ProtectedRoute>
           } />
+
+          <Route path="/profile" element={
+            <ProtectedRoute><ProfilePage /></ProtectedRoute>
+          }/>
+
+          <Route path="/guide" element={<GuidePage />} /> {/* Guide can be accessed without login */}
 
           <Route path='/not-found' element={
             <ProtectedRoute><NotFoundPage/></ProtectedRoute>

@@ -28,3 +28,19 @@ export const getMeApi = async () => {
   const res = await axiosInstance.get('/auth/me');
   return res.data;
 };
+
+//update name
+export const updateProfileApi = async (name) =>{
+  const res = await axiosInstance.put('/auth/update-profile', {name});
+  return res.data;
+}
+
+//Change password
+export const changePasswordApi = async (currentPassword, newPassword) =>{
+  const res = await axiosInstance.put('/auth/change-password', {
+    currentPassword,
+    newPassword,
+  });
+  
+  return res.data;
+}
