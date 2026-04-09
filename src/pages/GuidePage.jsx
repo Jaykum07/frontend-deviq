@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import PublicNavbar from '../components/PublicNavbar';
 import { colors, font, card, btnPrimary } from '../theme';
 import useAuth from '../hooks/useAuth';
 
@@ -296,7 +297,7 @@ const GuidePage = () => {
       backgroundColor: colors.bg,
       fontFamily:      font.family,
     }}>
-      <Navbar />
+      {user ? <Navbar />: <PublicNavbar />}
 
       <div style={{
         maxWidth: '800px',

@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthProvider';
 
 import LoginPage     from './pages/LoginPage';
 import RegisterPage  from './pages/RegisterPage';
+import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import AnalyzePage   from './pages/AnalyzePage';
 import ComparePage   from './pages/ComparePage';
@@ -44,6 +45,7 @@ function App() {
           }/>
 
           <Route path="/guide" element={<GuidePage />} /> {/* Guide can be accessed without login */}
+          <Route path='/' element={<LandingPage />} /> {/* Landing page is public */}
 
           <Route path='/not-found' element={
             <ProtectedRoute><NotFoundPage/></ProtectedRoute>
