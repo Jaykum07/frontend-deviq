@@ -6,7 +6,6 @@ candidates, and generate structured reports — all without needing a
 GitHub account.
 
 > Backend repository: https://github.com/YOUR_USERNAME/deviq-backend
-> Live demo: coming soon
 
 ---
 
@@ -35,6 +34,8 @@ insights without manual GitHub browsing.
 ---
 
 ## Project Structure
+
+```
 Frontend/
 ├── public/
 │   └── deviqlogo.jpg                ← app logo
@@ -113,6 +114,7 @@ Frontend/
 ├── index.html
 ├── vite.config.js
 └── package.json
+```
 
 ---
 
@@ -185,9 +187,11 @@ This is the single source of truth for the entire app.
 
 ### AnalyzePage breakdown
 
-`AnalyzePage.jsx` is the most complex page. It is broken into small
+AnalyzePage.jsx is the most complex page. It is broken into small
 focused components rather than one large file:
-AnalyzePage.jsx (orchestrator — fetches data, manages state)
+
+```
+AnalyzePage.jsx         (orchestrator — fetches data, manages state)
 ├── ProfileHeader.jsx   (avatar, name, bio, GitHub link, save button)
 ├── TabNav.jsx          (overview / repos / analysis switcher)
 ├── OverviewTab.jsx
@@ -197,36 +201,40 @@ AnalyzePage.jsx (orchestrator — fetches data, manages state)
 ├── ReposTab.jsx
 │   └── RepoRow.jsx     (clickable repo row)
 ├── AnalysisTab.jsx
-│   ├── ActivityChart.jsx (line chart by quarter)
-│   └── LangChart.jsx   (reused — top repos by stars)
+│   ├── ActivityChart.jsx  (line chart by quarter)
+│   └── LangChart.jsx      (reused — top repos by stars)
 └── Modals
-├── RepoDetailModal.jsx
-└── SaveReportModal.jsx
+    ├── RepoDetailModal.jsx
+    └── SaveReportModal.jsx
+```
 
 ### Why this structure matters
 
 Each component has exactly one responsibility. If the score card design
-needs to change, only `ScoreCard.jsx` is touched. If the chart library
-changes, only `LangChart.jsx` is updated. This is called the Single
-Responsibility Principle.
+needs to change, only ScoreCard.jsx is touched. If the chart library
+changes, only LangChart.jsx is updated. This is called the Single
+Responsibility Principle — a standard software engineering practice.
 
 ---
 
 ## Authentication Flow
+
+```
 User visits /dashboard
-↓
+       ↓
 ProtectedRoute checks AuthContext
-↓
+       ↓
 AuthContext reads localStorage for accessToken
-↓
+       ↓
 Calls GET /api/auth/me to verify token is still valid
-↓
+       ↓
 Valid?   → render the page
 Invalid? → redirect to /login automatically
+```
 
 ### Token handling
 
-- Access token stored in `localStorage` as `accessToken`
+- Access token stored in localStorage as accessToken
 - Axios request interceptor attaches token to every request header automatically
 - Axios response interceptor watches for 401 → clears storage → redirects to login
 - No manual token management needed in any page or component
@@ -235,8 +243,8 @@ Invalid? → redirect to /login automatically
 
 ## API Layer
 
-All API calls live in `src/api/`. Each file handles one resource.
-All files import from `axiosInstance.js` so base URL and token are
+All API calls live in src/api/. Each file handles one resource.
+All files import from axiosInstance.js so base URL and token are
 handled automatically everywhere.
 
 ```js
@@ -274,7 +282,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open http://localhost:5173 in your browser.
 
 ### Environment variables
 
@@ -282,8 +290,8 @@ Open `http://localhost:5173` in your browser.
 VITE_API_URL=http://localhost:5000/api
 ```
 
-All Vite environment variables must start with `VITE_`. After editing
-`.env`, restart the dev server with `npm run dev`.
+All Vite environment variables must start with VITE_. After editing
+.env restart the dev server with npm run dev.
 
 ### Scripts
 
@@ -317,36 +325,41 @@ npm run dev
 
 The app is fully responsive across all screen sizes.
 
-| Breakpoint | Behavior                                          |
-|------------|---------------------------------------------------|
-| 1100px+    | Full layout, 3-column grids, sidebar nav          |
-| 768px–1100 | 2-column grids, compact nav                       |
-| 640px–768  | Tablet layout, hamburger menu                     |
-| 0–640px    | Single column, mobile drawer, stacked buttons     |
+| Breakpoint  | Behavior                                          |
+|-------------|---------------------------------------------------|
+| 1100px+     | Full layout, 3-column grids, full navbar          |
+| 768px–1100  | 2-column grids, compact nav                       |
+| 640px–768   | Tablet layout, hamburger menu                     |
+| 0–640px     | Single column, mobile drawer, stacked buttons     |
 
 ---
 
 ## Key Design Decisions
 
-**Inline styles over CSS classes.** Since Tailwind v4 had configuration
-issues and this is a first MERN project, all styling uses JavaScript
-style objects. This is valid production React — React Native uses the
-same pattern. It also makes component styles co-located and easy to
-read.
+**Inline styles over CSS classes.**
+Since Tailwind v4 had configuration issues and this is a first MERN
+project, all styling uses JavaScript style objects. This is valid
+production React — React Native uses the same pattern. It also makes
+component styles co-located and easy to read.
 
-**Theme file as single source of truth.** All colors, fonts, and
-reusable style objects are exported from `src/theme.js`. Changing the
-blue accent color means editing one line.
+**Theme file as single source of truth.**
+All colors, fonts, and reusable style objects are exported from
+src/theme.js. Changing the blue accent color means editing one line.
 
-**Separate Public and Auth navbars.** Public pages show
-`PublicNavbar` with Sign in and Get started buttons. Authenticated
-pages show `Navbar` with dashboard links and profile access. This
-avoids conditional rendering complexity inside one large component.
+**Separate Public and Auth navbars.**
+Public pages show PublicNavbar with Sign in and Get started buttons.
+Authenticated pages show Navbar with dashboard links and profile access.
+This avoids conditional rendering complexity inside one large component.
 
-**Component folder per feature.** Analyze components live in
-`components/analyze/`, compare in `components/compare/`, reports in
-`components/reports/`. New developers can immediately find what they
-need.
+**Component folder per feature.**
+Analyze components live in components/analyze/, compare in
+components/compare/, reports in components/reports/. New developers
+can immediately find what they need.
+
+**Snapshot in reports.**
+When a report is saved, scores are frozen at that moment. Even if
+the developer pushes more code later, the saved report reflects scores
+at the evaluation date — exactly like a marksheet.
 
 ---
 
@@ -355,22 +368,23 @@ need.
 | Bug | Cause | Fix |
 |-----|-------|-----|
 | Duplicate history entries | Always creating new history doc | Changed to upsert by userId + username |
-| Duplicate report saves | No save state tracking | Added `reportSaved` boolean state, button disabled after save |
-| AnalyzePage blank render | Wrong data path `res.data.analysis` | Added fallback `res?.data?.analysis \|\| res?.analysis` |
-| Compare save failing | `analysisId` not included in compare response | Added `analysisId: analysis._id` to compare controller results |
-| Tailwind classes not applying | Tailwind v4 changed setup | Switched to inline styles + CSS variables |
+| Duplicate report saves | No save state tracking | Added reportSaved boolean, button disabled after save |
+| AnalyzePage blank render | Wrong data path | Added fallback for both response structures |
+| Compare save failing | analysisId not in compare response | Added analysisId to compare controller results |
+| Tailwind classes not applying | Tailwind v4 changed setup entirely | Switched to inline styles + CSS variables |
 
 ---
 
 ## Git Commit History
+
+```
+docs: complete frontend README with full project documentation
 feat: add LandingPage with PublicNavbar, features, scoring, FAQ and footer
 feat: professional responsive Navbar and ProfilePage redesign
 feat: add ProfilePage and GuidePage with scoring criteria and FAQ
-feat: add backend update-profile and change-password endpoints
 feat: add ReportsPage with filter tabs, report cards and detail modal
 feat: add ComparePage with winner banner, dimension chart and compare cards
 fix:  disable save button after report saved to prevent duplicates
-fix:  add duplicate title check in report creation
 fix:  comparison report save with proper analysisIds validation
 fix:  include analysisId in compare controller results response
 refactor: break AnalyzePage into proper component structure
@@ -381,12 +395,14 @@ feat: dark theme UI - navbar, login, register pages
 feat: add 404 not found page with SVG illustration
 feat: frontend setup - Vite, React Router, AuthContext, axios
 docs: add frontend README
+```
 
 ---
 
 ## Current Status
 
 ### Completed
+
 - [x] Public landing page with hero, features, scoring, FAQ, footer
 - [x] Public navbar with Sign in and Get started buttons
 - [x] Login and register pages with validation
@@ -394,9 +410,9 @@ docs: add frontend README
 - [x] Dashboard with search, stats cards, history list
 - [x] Analyze page with 3 tabs — Overview, Repos, Analysis
 - [x] Repo detail modal with stars, forks, topics, dates
-- [x] Save report from analyze page
+- [x] Save report from analyze page with duplicate prevention
 - [x] Compare page with winner banner and dimension chart
-- [x] Compare report save with duplicate prevention
+- [x] Compare report save
 - [x] Reports page with filter tabs and full report detail modal
 - [x] Profile page with edit name and change password
 - [x] Guide page with steps, scoring criteria, limitations, FAQ
@@ -405,6 +421,7 @@ docs: add frontend README
 - [x] Consistent dark theme design system
 
 ### Pending
+
 - [ ] PDF report download
 - [ ] Share report via public link
 
@@ -414,12 +431,15 @@ docs: add frontend README
 
 | Repo | Description |
 |------|-------------|
-| [deviq-backend](https://github.com/YOUR_USERNAME/deviq-backend) | Node.js + Express + MongoDB REST API |
+| deviq-backend | Node.js + Express + MongoDB REST API |
+| Link | https://github.com/YOUR_USERNAME/deviq-backend |
 
 ---
 
 ## Author
 
-Built as a final year academic project demonstrating full-stack MERN
+Built as a Pre final year academic project demonstrating full-stack MERN
 development with professional UI/UX design, React component architecture,
 JWT authentication, GitHub API integration, and responsive layout.
+
+© 2025 DevIQ — Developer Intelligence Platform
