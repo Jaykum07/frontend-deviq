@@ -5,7 +5,7 @@ that allows recruiters to analyze GitHub developer profiles, compare
 candidates, and generate structured reports — all without needing a
 GitHub account.
 
-> Backend repository: https://github.com/YOUR_USERNAME/deviq-backend
+> Backend repository: https://github.com/jaykum07/deviq-backend
 
 ---
 
@@ -269,7 +269,7 @@ const res = await analyzeUserApi('torvalds');
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/deviq-frontend.git
+git clone https://github.com/jaykum07/deviq-frontend.git
 cd deviq-frontend
 
 # Install dependencies
@@ -432,7 +432,7 @@ docs: add frontend README
 | Repo | Description |
 |------|-------------|
 | deviq-backend | Node.js + Express + MongoDB REST API |
-| Link | https://github.com/YOUR_USERNAME/deviq-backend |
+| Link | https://github.com/jaykum07/deviq-backend |
 
 ---
 
